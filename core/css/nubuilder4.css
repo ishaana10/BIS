@@ -436,22 +436,77 @@
 	 background-color:transparent;
 	 width:auto 
 }
+#outer {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	width: 100%;
+	background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+	box-sizing: border-box;
+	padding: 20px;
+}
  .nuLogin {
 	 background-color:white;
-	 border-style:solid;
-	 border-width:1px 3px 3px 1px;
-	 border-color:rgba(0,0,0,0.08);
-	 height:300px;
-	 width:350px;
-	 margin:50px auto 0;
-	 padding:30px;
-	 border-radius:10px 
+	 border: none;
+	 box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+	 height: auto;
+	 max-width: 400px;
+	 width: 100%;
+	 margin: 0 auto;
+	 padding: 40px 30px;
+	 border-radius: 12px;
+	 box-sizing: border-box;
+}
+ .nuLogin table {
+	 width: 100%;
+}
+ .nuLogin td {
+	 width: 100%;
 }
  .nuLoginInput {
-	 height:40px;
-	 width:310px;
-	 border-width:0 0 1px;
-	 padding:0 0 0 10px 
+	 height:44px;
+	 width:100% !important;
+	 border-width:0 0 2px;
+	 border-color: #ddd;
+	 padding:0 10px;
+	 box-sizing: border-box;
+	 font-size: 16px;
+	 transition: border-color 0.3s ease;
+	 margin-bottom: 20px;
+}
+ .nuLoginInput:focus {
+	 border-color: #007bff;
+	 outline: none;
+}
+ .nuLogin .nuButton,
+ .nuLogin #submit,
+ .nuLogin #submitSSO {
+	 background-color: #007bff !important;
+	 color: white !important;
+	 border: none !important;
+	 padding: 12px 24px !important;
+	 font-size: 16px !important;
+	 font-weight: 600 !important;
+	 border-radius: 6px !important;
+	 cursor: pointer !important;
+	 transition: background-color 0.3s ease, transform 0.1s ease !important;
+	 box-shadow: 0 4px 6px rgba(0, 123, 255, 0.15) !important;
+	 width: 100% !important;
+	 display: block;
+	 box-sizing: border-box;
+}
+ .nuLogin .nuButton:hover,
+ .nuLogin #submit:hover,
+ .nuLogin #submitSSO:hover {
+	 background-color: #0056b3 !important;
+	 transform: translateY(-1px) !important;
+	 box-shadow: 0 6px 12px rgba(0, 123, 255, 0.2) !important;
+}
+ .nuLogin .nuButton:active,
+ .nuLogin #submit:active,
+ .nuLogin #submitSSO:active {
+	 transform: translateY(1px) !important;
 }
  .nuDragBox:hover {
 	 color:red 
@@ -1471,3 +1526,158 @@
 	visibility: hidden
 }
 
+
+/* ==========================================================================
+   Responsive and Modern UI/UX Upgrades (BIS Enhancements)
+   ========================================================================== */
+
+html, body {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+
+#nuBreadcrumbHolder {
+  background-color: #2c3e50 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15) !important;
+  padding: 8px 15px !important;
+  font-weight: 600;
+  border-bottom: 1px solid #34495e !important;
+}
+
+#nuActionHolder {
+  background-color: #ffffff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+  padding: 12px 15px !important;
+  height: auto !important;
+  display: flex !important;
+  flex-wrap: wrap !important;
+  gap: 8px !important;
+  align-items: center !important;
+}
+
+#nuTabHolder {
+  border-bottom: 2px solid #e2e8f0 !important;
+  padding: 10px 15px 0 !important;
+  background-color: #f8fafc !important;
+}
+
+.nuTab, .nuTabTitle, .nuPortraitTab {
+  font-weight: 600 !important;
+  color: #4a5568 !important;
+  border-radius: 6px 6px 0 0 !important;
+  padding: 8px 16px !important;
+  transition: all 0.2s ease !important;
+  border: 1px solid transparent !important;
+}
+
+.nuTabSelected, .nuTabTitleColumn[style*="font-weight: bold"] {
+  background-color: #ffffff !important;
+  color: #3182ce !important;
+  border: 1px solid #e2e8f0 !important;
+  border-bottom-color: #ffffff !important;
+}
+
+.nuBrowseTable, .nuSelectBrowse {
+  border: 1px solid #e2e8f0 !important;
+  border-radius: 4px !important;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.nuBrowseTable:hover {
+  background-color: #f8fafc !important;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02) !important;
+}
+
+.nuSelectBrowse {
+  background-color: #ebf8ff !important;
+  border-color: #bee3f8 !important;
+}
+
+.nuActionButton, .nuButton, button {
+  background-color: #3182ce !important;
+  color: #ffffff !important;
+  border: none !important;
+  padding: 8px 16px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  font-weight: 600 !important;
+  transition: background-color 0.2s, transform 0.1s !important;
+  box-shadow: 0 2px 4px rgba(49, 130, 206, 0.1) !important;
+}
+
+.nuActionButton:hover, .nuButton:hover, button:hover {
+  background-color: #2b6cb0 !important;
+}
+
+input, select, textarea {
+  border: 1px solid #cbd5e0 !important;
+  border-radius: 6px !important;
+  padding: 8px 12px !important;
+  box-sizing: border-box !important;
+  font-size: 13px !important;
+  transition: border-color 0.2s, box-shadow 0.2s !important;
+}
+
+input:focus, select:focus, textarea:focus {
+  border-color: #3182ce !important;
+  box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.2) !important;
+  outline: none !important;
+}
+
+/* Options Box popup modern styling */
+.nuOptionsList {
+  background-color: #ffffff !important;
+  border: 1px solid #e2e8f0 !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  border-radius: 8px !important;
+  padding: 10px !important;
+}
+
+.nuOptionsListTitle {
+  font-weight: 700 !important;
+  color: #1a202c !important;
+  font-size: 14px !important;
+  border-bottom: 1px solid #edf2f7 !important;
+  padding-bottom: 6px !important;
+  display: block !important;
+  margin-bottom: 6px !important;
+}
+
+[data-nu-option-title] {
+  padding: 6px 12px !important;
+  border-radius: 4px !important;
+  transition: background-color 0.15s ease !important;
+}
+
+[data-nu-option-title]:hover {
+  background-color: #f7fafc !important;
+  color: #2b6cb0 !important;
+}
+
+@media only screen and (max-width: 768px) {
+  #outer {
+    padding: 10px !important;
+  }
+  .nuLogin {
+    padding: 30px 20px !important;
+  }
+  #nuActionHolder {
+    flex-direction: column !important;
+    align-items: stretch !important;
+  }
+  #nuBreadcrumbHolder {
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
+  }
+  /* Scroll containers for subform lists and overflow elements on small screens */
+  [id$="scrollDiv"] {
+    max-width: 100vw !important;
+    overflow-x: auto !important;
+  }
+  body {
+    overflow-x: auto !important;
+    min-width: 320px !important;
+  }
+}
