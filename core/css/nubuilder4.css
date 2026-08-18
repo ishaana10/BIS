@@ -1643,7 +1643,7 @@ html, body {
   background-color: #2b6cb0 !important;
 }
 
-input, select, textarea {
+#nuActionHolder input, #nuActionHolder select, .nuSearch {
   border: 1px solid #cbd5e0 !important;
   border-radius: 6px !important;
   padding: 6px 12px !important;
@@ -1655,9 +1655,25 @@ input, select, textarea {
   vertical-align: middle !important;
 }
 
-.nuSearch {
-  height: 34px !important;
-  box-sizing: border-box !important;
+.nuEditBody input:not([type="checkbox"]):not([type="radio"]):not(.nuSubformCheckbox),
+.nuEditBody select {
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  padding: 4px 8px;
+  box-sizing: border-box;
+  font-size: 13px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  vertical-align: middle;
+}
+
+.nuEditBody textarea {
+  border: 1px solid #cbd5e0;
+  border-radius: 6px;
+  padding: 6px 8px;
+  box-sizing: border-box;
+  font-size: 13px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  vertical-align: middle;
 }
 
 input:focus, select:focus, textarea:focus {
