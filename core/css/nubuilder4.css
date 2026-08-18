@@ -1598,13 +1598,20 @@ html, body {
   background-color: #3182ce !important;
   color: #ffffff !important;
   border: none !important;
-  padding: 8px 16px !important;
+  padding: 6px 16px !important;
   border-radius: 6px !important;
   font-size: 13px !important;
+  line-height: 1.4 !important;
+  height: 34px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
   cursor: pointer !important;
   font-weight: 600 !important;
   transition: background-color 0.2s, transform 0.1s !important;
   box-shadow: 0 2px 4px rgba(49, 130, 206, 0.1) !important;
+  vertical-align: middle !important;
+  box-sizing: border-box !important;
 }
 
 .nuActionButton:hover, .nuButton:hover, button:hover {
@@ -1614,10 +1621,18 @@ html, body {
 input, select, textarea {
   border: 1px solid #cbd5e0 !important;
   border-radius: 6px !important;
-  padding: 8px 12px !important;
+  padding: 6px 12px !important;
+  height: 34px !important;
+  line-height: 1.4 !important;
   box-sizing: border-box !important;
   font-size: 13px !important;
   transition: border-color 0.2s, box-shadow 0.2s !important;
+  vertical-align: middle !important;
+}
+
+.nuSearch {
+  height: 34px !important;
+  box-sizing: border-box !important;
 }
 
 input:focus, select:focus, textarea:focus {

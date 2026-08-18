@@ -3691,6 +3691,7 @@ function nuGetOptionsList(f, t, p, a, type) {
 		FormInfo : ['Form Info', 'nuShowFormInfo();', 'fa-info', 'M'],
 		VersionInfo : ['Version Info', 'nuShowVersionInfo();', 'fa-info', 'V'],
 		WebDataRocks : ['Pivot Analysis', 'nuOpenWebDataRocks()', 'fas fa-table', 'W'],
+		GitUpdate : ['Git Update', 'window.open("gitupdate.php", "_blank");', 'fas fa-code-branch', 'G'],
 		Logout: ['Log out', 'nuAskLogout();', 'fas fa-sign-out-alt', 'L']
 	};
 
@@ -3753,6 +3754,7 @@ function nuGetOptionsList(f, t, p, a, type) {
 		list.push(items.FileManager);
 		list.push(items.Backup);
 		list.push(items.Setup);
+		list.push(items.GitUpdate);
 		list.push(items.FormInfo);
 		list.push(items.VersionInfo);
 	}
