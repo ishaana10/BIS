@@ -6893,7 +6893,7 @@ function nuOpenWebDataRocks() {
 		for (let r = 0; r < rows.length; r++) {
 			let rowObj = {};
 			for (let c = 0; c < cols.length; c++) {
-				const colTitle = cols[c].title || \`Column_\${c}\`;
+				const colTitle = cols[c].title || `Column_${c}`;
 				// Skip empty columns or actions column if any
 				if (colTitle.trim() === "") continue;
 				rowObj[colTitle] = rows[r][c];
