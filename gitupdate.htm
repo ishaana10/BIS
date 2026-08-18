@@ -1,0 +1,349 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+
+    <title>nuBuilder Git Update Manager</title>
+    <link rel="stylesheet" href="core/libs/bootstrap/bootstrap.min.css">
+    <link href='core/libs/fontawesome/css/fontawesome.min.css' rel='stylesheet'>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            padding: 20px;
+        }
+        .card {
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border: none;
+            margin-bottom: 20px;
+        }
+        .card-header {
+            background-color: #212529;
+            color: #ffffff;
+            font-weight: bold;
+            border-top-left-radius: 8px !important;
+            border-top-right-radius: 8px !important;
+        }
+        .nav-tabs .nav-link {
+            color: #495057;
+            font-weight: 600;
+        }
+        .nav-tabs .nav-link.active {
+            color: #0d6efd;
+            border-bottom: 2px solid #0d6efd;
+        }
+        .console-box {
+            background-color: #1e1e1e;
+            color: #00ff66;
+            font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 13px;
+            padding: 15px;
+            border-radius: 6px;
+            min-height: 180px;
+            max-height: 350px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        .commit-item {
+            border-bottom: 1px solid #e9ecef;
+            padding: 10px 0;
+        }
+        .commit-item:last-child {
+            border-bottom: none;
+        }
+        .badge-git {
+            background-color: #6f42c1;
+            color: #fff;
+        }
+    </style>
+
+    <script type='text/javascript' src='core/libs/jquery/jquery-3.7.0.min.js'></script>
+    <script type='text/javascript' src='core/libs/bootstrap/bootstrap.bundle.min.js'></script>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row justify-content-center">
+        <div class="col-12 col-lg-10 col-xl-9">
+
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center py-3">
+                    <span class="fs-5"><i class="fa-solid fa-code-branch me-2"></i>nuBuilder Direct Git Update Console</span>
+                    <button class="btn btn-outline-light btn-sm" onclick="refreshGitStatus()"><i class="fa-solid fa-arrows-rotate me-1"></i> Refresh Status</button>
+                </div>
+
+                <div class="card-body">
+                    <ul class="nav nav-tabs mb-4" id="gitTabs" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="status-tab" data-bs-toggle="tab" data-bs-target="#tab-status" type="button" role="tab"><i class="fa-solid fa-terminal me-1"></i> Continuous Updates</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="config-tab" data-bs-toggle="tab" data-bs-target="#tab-config" type="button" role="tab"><i class="fa-solid fa-sliders me-1"></i> Settings</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="init-tab" data-bs-toggle="tab" data-bs-target="#tab-init" type="button" role="tab"><i class="fa-solid fa-link me-1"></i> Initialize & Link</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="history-tab" data-bs-toggle="tab" data-bs-target="#tab-history" type="button" role="tab" onclick="loadGitHistoryList()"><i class="fa-solid fa-clock-rotate-left me-1"></i> Git Commit History</button>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="gitTabsContent">
+
+                        <!-- TAB 1: STATUS & PULL -->
+                        <div class="tab-pane fade show active" id="tab-status" role="tabpanel">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-light rounded border">
+                                        <small class="text-muted d-block text-uppercase fw-bold">Active Branch</small>
+                                        <span id="display-branch" class="fs-6 fw-bold text-dark">Checking...</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="p-3 bg-light rounded border">
+                                        <small class="text-muted d-block text-uppercase fw-bold">Remote Repository</small>
+                                        <span id="display-remote" class="fs-6 fw-bold text-dark text-break">Checking...</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Git Status Console</label>
+                                <div id="git-status-log" class="console-box">Querying Git repository status...</div>
+                            </div>
+
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-primary fw-bold" onclick="triggerGitPull()"><i class="fa-solid fa-download me-1"></i> Pull Code Updates & Update DB</button>
+                                <button class="btn btn-secondary" onclick="refreshGitStatus()"><i class="fa-solid fa-rotate me-1"></i> Re-check Status</button>
+                            </div>
+                        </div>
+
+                        <!-- TAB 2: CONFIGURATION -->
+                        <div class="tab-pane fade" id="tab-config" role="tabpanel">
+                            <form id="git-settings-form" onsubmit="event.preventDefault(); saveGitSettings();">
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Git Executable Path</label>
+                                    <input type="text" class="form-control font-monospace" id="git_path" value="git" placeholder="git or /usr/bin/git">
+                                    <div class="form-text">Name or absolute path to the Git binary executable on your webserver.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Git Repository Root Directory</label>
+                                    <input type="text" class="form-control font-monospace" id="git_repo_dir" value="" placeholder="/var/www/html/nubuilder">
+                                    <div class="form-text">Absolute path to the nuBuilder root folder containing .git.</div>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label fw-bold">Target Update Branch</label>
+                                    <input type="text" class="form-control font-monospace" id="update_branch" value="main" placeholder="main or master">
+                                </div>
+                                <div class="d-flex gap-2">
+                                    <button type="button" class="btn btn-success fw-bold" onclick="saveGitSettings()"><i class="fa-solid fa-floppy-disk me-1"></i> Save Settings</button>
+                                    <button type="button" class="btn btn-outline-dark" onclick="testGitSettings()"><i class="fa-solid fa-plug-circle-check me-1"></i> Test Git Connection</button>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- TAB 3: INITIALIZE & LINK -->
+                        <div class="tab-pane fade" id="tab-init" role="tabpanel">
+                            <div class="alert alert-info">
+                                <i class="fa-solid fa-circle-info me-1"></i> Use this tool if your nuBuilder installation directory is not currently tracked by Git. It will initialize Git, bind origin remote URL, and pull files in place.
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Git Remote Repository URL</label>
+                                <input type="text" class="form-control font-monospace" id="init_repo_url" placeholder="https://github.com/username/repository.git">
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label fw-bold">Branch to Checkout & Sync</label>
+                                <input type="text" class="form-control font-monospace" id="init_branch" value="main" placeholder="main">
+                            </div>
+                            <button type="button" class="btn btn-warning fw-bold text-dark" onclick="initializeGitRepository()"><i class="fa-solid fa-link me-1"></i> Initialize & Link Git Repository</button>
+                        </div>
+
+                        <!-- TAB 4: COMMIT LOG HISTORY -->
+                        <div class="tab-pane fade" id="tab-history" role="tabpanel">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h6 class="fw-bold mb-0">Recent Git Commits</h6>
+                                <button class="btn btn-outline-secondary btn-sm" onclick="loadGitHistoryList()"><i class="fa-solid fa-rotate me-1"></i> Refresh Commit Log</button>
+                            </div>
+                            <div id="git-history-list" class="border rounded p-3 bg-white" style="min-height: 200px;">
+                                <div class="text-muted">Loading commits...</div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+function refreshGitStatus() {
+    const statusLog = document.getElementById('git-status-log');
+    if (statusLog) statusLog.innerText = "Querying git repository status...";
+
+    fetch('core/nugitupdate.php?action=git_status')
+    .then(res => res.json())
+    .then(data => {
+        if (!data) return;
+        if (document.getElementById('git_path')) document.getElementById('git_path').value = data.git_path || 'git';
+        if (document.getElementById('git_repo_dir')) document.getElementById('git_repo_dir').value = data.git_repo_dir || '';
+        if (document.getElementById('update_branch')) document.getElementById('update_branch').value = data.selected_branch || 'main';
+        if (document.getElementById('init_repo_url') && data.git_remote_url) document.getElementById('init_repo_url').value = data.git_remote_url;
+
+        if (document.getElementById('display-branch')) document.getElementById('display-branch').innerText = data.branch || 'None';
+        if (document.getElementById('display-remote')) document.getElementById('display-remote').innerText = data.git_remote_url || 'Not Configured';
+
+        if (data.success) {
+            statusLog.innerText = data.status || 'Repository connected and healthy.';
+        } else {
+            statusLog.innerText = "❌ Git Diagnostic Output:\n" + (data.status || data.error || 'Check failed');
+        }
+    })
+    .catch(err => {
+        if (statusLog) statusLog.innerText = "Error contacting backend handler: " + err;
+    });
+}
+
+function saveGitSettings() {
+    const gitPath = document.getElementById('git_path').value;
+    const gitRepoDir = document.getElementById('git_repo_dir').value;
+    const updateBranch = document.getElementById('update_branch').value;
+
+    fetch('core/nugitupdate.php?action=save_git_settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ git_path: gitPath, git_repo_dir: gitRepoDir, update_branch: updateBranch })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert('Git settings saved successfully.');
+            refreshGitStatus();
+        } else {
+            alert('Error saving Git settings: ' + data.error);
+        }
+    });
+}
+
+function testGitSettings() {
+    const gitPath = document.getElementById('git_path').value;
+    const gitRepoDir = document.getElementById('git_repo_dir').value;
+
+    fetch('core/nugitupdate.php?action=test_git_settings', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ git_path: gitPath, git_repo_dir: gitRepoDir })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            refreshGitStatus();
+        } else {
+            alert('Git Connection Test Failed:\n\n' + data.error);
+        }
+    });
+}
+
+function initializeGitRepository() {
+    const gitPath = document.getElementById('git_path').value;
+    const gitRepoDir = document.getElementById('git_repo_dir').value;
+    const repoUrl = document.getElementById('init_repo_url').value;
+    const branch = document.getElementById('init_branch').value || 'main';
+
+    if (!repoUrl) {
+        alert('Please specify your Git Remote Repository URL.');
+        return;
+    }
+
+    if (!confirm(`Initialize Git repository in '${gitRepoDir}' and link to '${repoUrl}'? Existing local files will be synchronized.`)) {
+        return;
+    }
+
+    const statusLog = document.getElementById('git-status-log');
+    if (statusLog) statusLog.innerText = "Initializing Git repository and fetching origin...";
+
+    // Switch to status tab
+    var statusTab = new bootstrap.Tab(document.getElementById('status-tab'));
+    statusTab.show();
+
+    fetch('core/nugitupdate.php?action=git_init', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ git_path: gitPath, git_repo_dir: gitRepoDir, repo_url: repoUrl, branch: branch })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            alert('Git repository initialized and synchronized successfully!');
+            refreshGitStatus();
+        } else {
+            alert('Git initialization error: ' + data.error);
+            refreshGitStatus();
+        }
+    });
+}
+
+function triggerGitPull() {
+    if (!confirm("Are you sure you wish to pull direct code updates from Git origin? This will sync local files and trigger nuBuilder database update routines.")) {
+        return;
+    }
+
+    const statusLog = document.getElementById('git-status-log');
+    if (statusLog) statusLog.innerText = "Executing Git Pull and Database Update... Please wait...";
+
+    fetch('core/nugitupdate.php?action=git_pull', { method: 'POST' })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            statusLog.innerText = "✅ " + data.message + "\n\nLog Details:\n" + data.log;
+            alert("Update completed successfully!");
+        } else {
+            statusLog.innerText = "❌ Update Failed:\n" + data.error;
+            alert("Update Error:\n" + data.error);
+        }
+    });
+}
+
+function loadGitHistoryList() {
+    const historyList = document.getElementById('git-history-list');
+    if (historyList) historyList.innerHTML = '<div class="text-muted">Loading commits...</div>';
+
+    fetch('core/nugitupdate.php?action=git_log')
+    .then(res => res.json())
+    .then(data => {
+        if (data.success && data.commits && data.commits.length > 0) {
+            let html = '';
+            data.commits.forEach(c => {
+                html += `
+                    <div class="commit-item">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <span class="badge badge-git font-monospace">${c.hash}</span>
+                            <small class="text-muted">${c.date} by <strong>${c.author}</strong></small>
+                        </div>
+                        <div class="fw-semibold text-dark">${c.message}</div>
+                    </div>
+                `;
+            });
+            historyList.innerHTML = html;
+        } else {
+            historyList.innerHTML = '<div class="text-muted">No commit history available or not a git repository.</div>';
+        }
+    });
+}
+
+$(document).ready(function() {
+    refreshGitStatus();
+});
+</script>
+
+</body>
+</html>
