@@ -147,13 +147,16 @@
 	 font-size:13.3333px;
 	 padding: 0.25rem 0.3rem
 }
- body {
+ body, #nubody {
 	 background-color:var(--nu-body);
 	 transform-origin:top left;
 	 padding:0;
 	 margin:0;
 	 font-family:var(--nu-font-sans-serif);
-	 font-size:13px 
+	 font-size:13px;
+	 min-height: 100vh;
+	 height: 100vh;
+	 box-sizing: border-box;
 }
  input {
 	 border: 1px solid var(--nu-border);
