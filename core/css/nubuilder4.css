@@ -1554,12 +1554,34 @@ html, body {
   flex-wrap: wrap !important;
   gap: 8px !important;
   align-items: center !important;
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
 }
 
 #nuTabHolder {
   border-bottom: 2px solid #e2e8f0 !important;
   padding: 10px 15px 0 !important;
   background-color: #f8fafc !important;
+  display: flex !important;
+  flex-wrap: nowrap !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  -webkit-overflow-scrolling: touch !important;
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
+}
+
+#nuRECORD {
+  max-width: 100vw !important;
+  box-sizing: border-box !important;
+}
+
+/* Scrollable container wrapper for subforms and grid tables */
+.nuSubform, .nuSubformScrollDiv, [id$="scrollDiv"] {
+  max-width: 100vw !important;
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch !important;
+  box-sizing: border-box !important;
 }
 
 .nuTab, .nuTabTitle, .nuPortraitTab {
@@ -1679,17 +1701,20 @@ input:focus, select:focus, textarea:focus {
     padding: 30px 20px !important;
   }
   #nuActionHolder {
-    flex-direction: column !important;
-    align-items: stretch !important;
+    flex-direction: row !important;
+    flex-wrap: wrap !important;
+    align-items: center !important;
   }
   #nuBreadcrumbHolder {
     justify-content: space-between !important;
     flex-wrap: wrap !important;
   }
-  /* Scroll containers for subform lists and overflow elements on small screens */
-  [id$="scrollDiv"] {
+  /* Responsive scroll containers for subforms and browse grid tables */
+  .nuSubform, .nuSubformScrollDiv, [id$="scrollDiv"], #nuRECORD.nuBrowseBody, div.nuBrowseBody #nuRECORD {
     max-width: 100vw !important;
     overflow-x: auto !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
   }
   body {
     overflow-x: auto !important;
