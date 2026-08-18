@@ -1723,11 +1723,31 @@ input:focus, select:focus, textarea:focus {
     flex-direction: row !important;
     flex-wrap: wrap !important;
     align-items: center !important;
+    height: auto !important;
+    padding: 8px !important;
+    gap: 6px !important;
   }
   #nuBreadcrumbHolder {
     justify-content: space-between !important;
     flex-wrap: wrap !important;
   }
+  #nuTabHolder {
+    flex-wrap: wrap !important;
+    height: auto !important;
+    overflow-x: visible !important;
+    gap: 4px !important;
+    padding: 8px !important;
+  }
+  #nuTabHolder .nuTab,
+  #nuTabHolder .nuTabSelected {
+    display: inline-block !important;
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    margin: 2px !important;
+    box-sizing: border-box !important;
+  }
+
   /* Responsive scroll containers for subforms and browse grid tables */
   .nuSubform, .nuSubformScrollDiv, [id$="scrollDiv"], #nuRECORD.nuBrowseBody, div.nuBrowseBody #nuRECORD {
     max-width: 100vw !important;
@@ -1738,5 +1758,65 @@ input:focus, select:focus, textarea:focus {
   body {
     overflow-x: auto !important;
     min-width: 320px !important;
+  }
+
+  /* Responsive single-column vertical layout for forms (including nuuser) */
+  .nuEditBody #nuRECORD {
+    position: relative !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    height: auto !important;
+    display: flex !important;
+    flex-direction: column !important;
+    padding: 10px !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Stack labels and form inputs in form containers */
+  .nuEditBody #nuRECORD label.nuLabel,
+  .nuEditBody #nuRECORD label {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    text-align: left !important;
+    display: block !important;
+    margin-top: 10px !important;
+    margin-bottom: 4px !important;
+    font-weight: 600 !important;
+    box-sizing: border-box !important;
+  }
+
+  .nuEditBody #nuRECORD input:not([type="checkbox"]):not([type="radio"]):not(.nuSubformCheckbox),
+  .nuEditBody #nuRECORD select,
+  .nuEditBody #nuRECORD textarea,
+  .nuEditBody #nuRECORD .nuLookupCode,
+  .nuEditBody #nuRECORD .nuLookupDescription {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+    display: block !important;
+  }
+
+  .nuEditBody #nuRECORD .nuLookupButton {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    margin-top: 4px !important;
+    margin-bottom: 8px !important;
+  }
+
+  .nuEditBody #nuRECORD .nuContentBox {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    width: 100% !important;
+    height: auto !important;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+    box-sizing: border-box !important;
   }
 }
