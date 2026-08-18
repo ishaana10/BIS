@@ -126,7 +126,7 @@ nuJSIndexInclude('core/libs/uppy/uppy.min.js');
 //nuJSIndexInclude('core/libs/tableToExcel.js');
 
 nuJSIndexInclude('core/libs/select2/select2.min.js');
-//nuJSIndexInclude('webpivot/webdatarocks.toolbar.min.js');
+nuJSIndexInclude('webpivot/webdatarocks.toolbar.min.js');
 nuJSIndexInclude('webpivot/webdatarocks.js');
 nuCSSIndexInclude('webpivot/webdatarocks.min.css');
 

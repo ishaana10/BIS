@@ -432,8 +432,8 @@ function nuLogin(loginTopRow, nuconfigNuWelcomeBodyInnerHTML, logonMode='normal'
 
 	var defaulTopRow = `
 						<tr>
-							<td align='center' style='padding:0px 0px 0px 33px; text-align:center;'>
-							<img src='core/graphics/logo.png'><br><br>
+							<td align='center' style='text-align:center;'>
+							<img src='core/graphics/logo.png' style='max-width: 100%; height: auto;'><br><br>
 							</td>
 						</tr>
 			`;
@@ -449,21 +449,21 @@ function nuLogin(loginTopRow, nuconfigNuWelcomeBodyInnerHTML, logonMode='normal'
 			`;
 	var h2sso = `
 						<tr>
-							<td align='center' style='text-align:center' colspan='2'>
-								<input id='submitSSO' style='width:90px' type='submit' class='nuButton' onclick='nuSSOLoginRequest()' value='SSO Log in'/>
+							<td align='center' style='text-align:center'>
+								<input id='submitSSO' type='submit' class='nuButton' onclick='nuSSOLoginRequest()' value='SSO Log in'/>
 								<br><br>
 							</td>
 						</tr>`;
 	var h3normal = `
 						<tr>
-							<td><div style='width:90px; margin-bottom: 5px;'>Username</div><input class='nuLoginInput' id='nuusername' autocomplete='off' /><br><br></td>
+							<td><div style='margin-bottom: 5px; font-weight: 600;'>Username</div><input class='nuLoginInput' id='nuusername' autocomplete='off' /><br></td>
 						</tr>
 						<tr>
-							<td><div style='width:90px; margin-bottom: 5px;'>Password</div><input class='nuLoginInput' id='nupassword' type='password' autocomplete='off' onkeypress='nuSubmit(event)'/><br></td>
+							<td><div style='margin-bottom: 5px; font-weight: 600;'>Password</div><input class='nuLoginInput' id='nupassword' type='password' autocomplete='off' onkeypress='nuSubmit(event)'/><br></td>
 						</tr>
 						<tr>
-							<td style='text-align:center' colspan='2'><br><br>
-								<input id='submit' style='width:90px' type='submit' class='nuButton' onclick='nuLoginRequest()' value='Log in'/>
+							<td style='text-align:center'><br>
+								<input id='submit' type='submit' class='nuButton' onclick='nuLoginRequest()' value='Log in'/>
 							</td>
 						</tr>`;
 	var h4 = `
@@ -500,7 +500,7 @@ function nuLogin(loginTopRow, nuconfigNuWelcomeBodyInnerHTML, logonMode='normal'
 	$('body').html(H);
 
 	if (nuIsMobile()) {
-		$('body').css('width', 300).css('height', 300);
+		$('body').css('width', '100%').css('height', '100%').css('min-height', '100vh');
 	}
 
 	if (window.nuLoginU == '' && window.nuLoginP == '') {

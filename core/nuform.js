@@ -3690,6 +3690,7 @@ function nuGetOptionsList(f, t, p, a, type) {
 		Setup : ['Setup', 'nuForm("nusetup","1","", "", 2)', 'fa-cogs', 'U'],
 		FormInfo : ['Form Info', 'nuShowFormInfo();', 'fa-info', 'M'],
 		VersionInfo : ['Version Info', 'nuShowVersionInfo();', 'fa-info', 'V'],
+		WebDataRocks : ['Pivot Analysis', 'nuOpenWebDataRocks()', 'fas fa-table', 'W'],
 		Logout: ['Log out', 'nuAskLogout();', 'fas fa-sign-out-alt', 'L']
 	};
 
@@ -3735,6 +3736,7 @@ function nuGetOptionsList(f, t, p, a, type) {
 
 	if (!typeSf) {
 		list.push(items.Refresh);
+		list.push(items.WebDataRocks);
 		if (admin) list.push(items.Divider);
 	}
 
@@ -6847,6 +6849,83 @@ function nuSetSaveButtonPosition(t, l, h, w, fs) {
 	if (nuSelectedTabNumber() !== '0') sb.css('display', 'none');
 
 	return sb;
+
+}
+
+function nuOpenWebDataRocks() {
+
+	// Remove existing overlay if any
+	$('#nuWebDataRocksOverlay').remove();
+
+	// Create overlay HTML
+	const overlayHtml = `
+		<div id="nuWebDataRocksOverlay" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-color: rgba(0, 0, 0, 0.55); z-index: 10000; display: flex; flex-direction: column; box-sizing: border-box; backdrop-filter: blur(4px);">
+			<div id="nuWebDataRocksHeader" style="background-color: #2c3e50; color: #ffffff; padding: 15px 25px; display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #34495e; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">
+				<div style="display: flex; align-items: center; gap: 12px;">
+					<i class="fas fa-table" style="font-size: 20px; color: #3182ce;"></i>
+					<span style="font-size: 18px; font-weight: 700; letter-spacing: 0.5px;">WebDataRocks Pivot Analysis</span>
+				</div>
+				<button onclick="$('#nuWebDataRocksOverlay').remove();" class="nuActionButton" style="background-color: #e53e3e !important; color: #ffffff !important; border: none !important; border-radius: 6px !important; padding: 8px 16px !important; cursor: pointer !important; font-weight: bold; transition: background-color 0.2s;">
+					<i class="fas fa-times" style="margin-right: 6px;"></i>Close Pivot
+				</button>
+			</div>
+			<div id="nuWebDataRocksContainer" style="flex: 1; padding: 25px; background-color: #f7fafc; overflow-y: auto; display: flex; flex-direction: column; gap: 15px;">
+				<div style="background-color: #ebf8ff; border-left: 4px solid #3182ce; padding: 12px 18px; border-radius: 4px; font-size: 14px; color: #2b6cb0;">
+					<i class="fas fa-info-circle" style="margin-right: 8px;"></i>
+					<strong>Tip:</strong> You can load your own JSON/CSV datasets, save or load pivot reports, and export to Excel/PDF using the toolbar buttons below.
+				</div>
+				<div id="wdr-pivot-container" style="flex: 1; min-height: 500px; background-color: #ffffff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.05); overflow: hidden;"></div>
+			</div>
+		</div>
+	`;
+
+	$('body').append(overlayHtml);
+
+	// Collect browse data if available
+	let pivotDataSource = {};
+	const currentForm = window.nuFORM.getCurrent();
+
+	if (currentForm && currentForm.browse_rows && currentForm.browse_rows.length > 0) {
+		const cols = currentForm.browse_columns;
+		const rows = currentForm.browse_rows;
+		let pivotData = [];
+
+		for (let r = 0; r < rows.length; r++) {
+			let rowObj = {};
+			for (let c = 0; c < cols.length; c++) {
+				const colTitle = cols[c].title || \`Column_\${c}\`;
+				// Skip empty columns or actions column if any
+				if (colTitle.trim() === "") continue;
+				rowObj[colTitle] = rows[r][c];
+			}
+			pivotData.push(rowObj);
+		}
+		pivotDataSource = { data: pivotData };
+	} else {
+		// Fallback to demo CSV
+		pivotDataSource = { filename: "https://cdn.webdatarocks.com/data/data.csv" };
+	}
+
+	// Instantiate WebDataRocks component
+	setTimeout(function() {
+		try {
+			new WebDataRocks({
+				container: "#wdr-pivot-container",
+				toolbar: true,
+				report: {
+					dataSource: pivotDataSource
+				},
+				global: {
+					localization: {
+						// Custom localization options if needed
+					}
+				}
+			});
+		} catch (err) {
+			console.error("Failed to initialize WebDataRocks:", err);
+			$('#wdr-pivot-container').html('<div style="padding: 20px; color: #e53e3e; font-weight: bold;">Error loading WebDataRocks. Please make sure script files are properly included.</div>');
+		}
+	}, 100);
 
 }
 
